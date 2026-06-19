@@ -22,6 +22,7 @@ echo [2/2] Starting the web server...
 echo.
 echo ========================================================
 echo The dashboard will be available at: http://localhost:5173
+echo (If port 5173 is busy, Vite will use the next free port shown below.)
 echo Please open your browser (Chrome/Edge) and go to that link.
 echo Keep this window open while you are viewing the dashboard.
 echo ========================================================
