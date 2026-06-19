@@ -17,6 +17,11 @@ import NotFound from './pages/NotFound';
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
+  const [uploadedWorkbook, setUploadedWorkbook] = useState(null);
+  const [uploadState, setUploadState] = useState({
+    status: 'idle',
+    error: '',
+  });
 
   useEffect(() => {
     if (darkMode) {
@@ -26,9 +31,54 @@ function App() {
     }
   }, [darkMode]);
 
+  const handleUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    setUploadState({
+      status: 'uploading',
+      error: '',
+    });
+
+    try {
+      const response = await fetch('/api/uploads/parse', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || 'Upload failed.');
+      }
+
+      setUploadedWorkbook(payload);
+      setUploadState({
+        status: 'success',
+        error: '',
+      });
+    } catch (error) {
+      setUploadState({
+        status: 'error',
+        error: error instanceof Error ? error.message : 'Upload failed.',
+      });
+    }
+  };
+
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayout darkMode={darkMode} setDarkMode={setDarkMode} />}>
+      <Route
+        path="/"
+        element={(
+          <DashboardLayout
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+            onUpload={handleUpload}
+            uploadState={uploadState}
+            workbook={uploadedWorkbook}
+          />
+        )}
+      >
         <Route index element={<Home />} />
         <Route path="production" element={<Production />} />
         <Route path="downtime" element={<Downtime />} />
@@ -40,7 +90,10 @@ function App() {
         <Route path="backlog" element={<Backlog />} />
         <Route path="packing" element={<Packing />} />
         <Route path="sap" element={<SAPData />} />
-        <Route path="reports" element={<Reports />} />
+        <Route
+          path="reports"
+          element={<Reports uploadedWorkbook={uploadedWorkbook} uploadState={uploadState} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

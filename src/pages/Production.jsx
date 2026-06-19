@@ -1,6 +1,8 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Line, Bar } from 'react-chartjs-2';
 import KPICard from '../components/KPICard';
+import UploadRequiredNotice from '../components/UploadRequiredNotice';
 import { Activity, Target, Zap, TrendingUp } from 'lucide-react';
 
 const chartOptions = {
@@ -24,6 +26,7 @@ const chartOptions = {
 };
 
 const Production = () => {
+  const { hasUploadedWorkbook } = useOutletContext();
   const hourlyData = {
     labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'],
     datasets: [
@@ -90,21 +93,25 @@ const Production = () => {
         <KPICard title="Hourly Rate" value="105" unit="pcs/hr" status="good" icon={TrendingUp} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card min-h-[350px] flex flex-col">
-          <h3 className="text-lg font-medium mb-4">Hourly Production Trend</h3>
-          <div className="flex-1 min-h-[280px]">
-            <Line data={hourlyData} options={chartOptions} />
+      {hasUploadedWorkbook ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card min-h-[350px] flex flex-col">
+            <h3 className="text-lg font-medium mb-4">Hourly Production Trend</h3>
+            <div className="flex-1 min-h-[280px]">
+              <Line data={hourlyData} options={chartOptions} />
+            </div>
           </div>
-        </div>
 
-        <div className="card min-h-[350px] flex flex-col">
-          <h3 className="text-lg font-medium mb-4">Line-wise Output</h3>
-          <div className="flex-1 min-h-[280px]">
-            <Bar data={lineWiseData} options={chartOptions} />
+          <div className="card min-h-[350px] flex flex-col">
+            <h3 className="text-lg font-medium mb-4">Line-wise Output</h3>
+            <div className="flex-1 min-h-[280px]">
+              <Bar data={lineWiseData} options={chartOptions} />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <UploadRequiredNotice />
+      )}
 
       <div className="card">
         <h3 className="text-lg font-medium mb-4">Line Status Overview</h3>

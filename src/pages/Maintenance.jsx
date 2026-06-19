@@ -1,7 +1,10 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Bar, Doughnut } from 'react-chartjs-2';
+import UploadRequiredNotice from '../components/UploadRequiredNotice';
 
 const Maintenance = () => {
+  const { hasUploadedWorkbook } = useOutletContext();
   const healthData = {
     labels: ['Excellent', 'Good', 'Fair', 'Needs Attention', 'Critical'],
     datasets: [
@@ -32,37 +35,41 @@ const Maintenance = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card flex flex-col min-h-[300px]">
-          <h3 className="text-lg font-medium mb-4">Overall Machine Health</h3>
-          <div className="flex-1 min-h-[250px] flex justify-center">
-            <Doughnut data={healthData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#9ca3af' } } } }} />
+      {hasUploadedWorkbook ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card flex flex-col min-h-[300px]">
+            <h3 className="text-lg font-medium mb-4">Overall Machine Health</h3>
+            <div className="flex-1 min-h-[250px] flex justify-center">
+              <Doughnut data={healthData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#9ca3af' } } } }} />
+            </div>
           </div>
-        </div>
 
-        <div className="card flex flex-col">
-          <h3 className="text-lg font-medium mb-4">PM Tracker (Preventive Maintenance)</h3>
-          <div className="space-y-4">
-            {[
-              { m: 'Stringer 1', d: 'Today', s: 'Pending' },
-              { m: 'Laminator 2', d: 'Tomorrow', s: 'Scheduled' },
-              { m: 'Framer 1', d: 'Overdue (1 day)', s: 'Overdue' },
-              { m: 'EL Tester', d: 'Next Week', s: 'Scheduled' }
-            ].map((item, i) => (
-              <div key={i} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-dark-border/30 rounded">
-                <div>
-                  <div className="font-medium">{item.m}</div>
-                  <div className="text-sm text-gray-500">{item.d}</div>
+          <div className="card flex flex-col">
+            <h3 className="text-lg font-medium mb-4">PM Tracker (Preventive Maintenance)</h3>
+            <div className="space-y-4">
+              {[
+                { m: 'Stringer 1', d: 'Today', s: 'Pending' },
+                { m: 'Laminator 2', d: 'Tomorrow', s: 'Scheduled' },
+                { m: 'Framer 1', d: 'Overdue (1 day)', s: 'Overdue' },
+                { m: 'EL Tester', d: 'Next Week', s: 'Scheduled' }
+              ].map((item, i) => (
+                <div key={i} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-dark-border/30 rounded">
+                  <div>
+                    <div className="font-medium">{item.m}</div>
+                    <div className="text-sm text-gray-500">{item.d}</div>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    item.s === 'Overdue' ? 'bg-danger/20 text-danger' :
+                    item.s === 'Pending' ? 'bg-warning/20 text-warning' : 'bg-primary/20 text-primary'
+                  }`}>{item.s}</span>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  item.s === 'Overdue' ? 'bg-danger/20 text-danger' :
-                  item.s === 'Pending' ? 'bg-warning/20 text-warning' : 'bg-primary/20 text-primary'
-                }`}>{item.s}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <UploadRequiredNotice />
+      )}
     </div>
   );
 };

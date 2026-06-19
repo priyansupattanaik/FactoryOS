@@ -15,6 +15,7 @@ import {
   Moon,
   Sun
 } from 'lucide-react';
+import FileUploadControl from '../components/FileUploadControl';
 
 const navItems = [
   { path: '/', label: 'Home', icon: LayoutDashboard },
@@ -30,7 +31,7 @@ const navItems = [
   { path: '/reports', label: 'Reports', icon: FileText },
 ];
 
-const DashboardLayout = ({ darkMode, setDarkMode }) => {
+const DashboardLayout = ({ darkMode, setDarkMode, onUpload, uploadState, workbook }) => {
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100 dark:bg-dark-bg text-gray-900 dark:text-gray-100 transition-colors duration-200">
       {/* Sidebar */}
@@ -74,6 +75,7 @@ const DashboardLayout = ({ darkMode, setDarkMode }) => {
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Shift A | 08:00 - 16:00</span>
           </div>
           <div className="flex items-center space-x-4">
+            <FileUploadControl onUpload={onUpload} uploadState={uploadState} workbook={workbook} />
             <button
               onClick={() => setDarkMode(!darkMode)}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-gray-400 transition-colors"
@@ -88,7 +90,7 @@ const DashboardLayout = ({ darkMode, setDarkMode }) => {
 
         {/* Page Content */}
         <div className="flex-1 overflow-y-auto p-6">
-          <Outlet />
+          <Outlet context={{ hasUploadedWorkbook: Boolean(workbook) }} />
         </div>
       </main>
     </div>

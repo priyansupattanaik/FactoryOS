@@ -1,11 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { Users, UserCheck, UserMinus, Plus } from 'lucide-react';
 import KPICard from '../components/KPICard';
+import UploadRequiredNotice from '../components/UploadRequiredNotice';
 
 const Manpower = () => {
   const navigate = useNavigate();
+  const { hasUploadedWorkbook } = useOutletContext();
 
   const attendanceData = {
     labels: ['Production', 'Quality', 'Maintenance', 'Store', 'Logistics'],
@@ -68,24 +70,28 @@ const Manpower = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card flex flex-col min-h-[300px]">
-          <h3 className="text-lg font-medium mb-4">Department-wise Attendance</h3>
-          <div className="flex-1 min-h-[250px]">
-            <Bar 
-              data={attendanceData} 
-              options={{ maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }} 
-            />
+      {hasUploadedWorkbook ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card flex flex-col min-h-[300px]">
+            <h3 className="text-lg font-medium mb-4">Department-wise Attendance</h3>
+            <div className="flex-1 min-h-[250px]">
+              <Bar 
+                data={attendanceData} 
+                options={{ maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }} 
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="card flex flex-col min-h-[300px]">
-          <h3 className="text-lg font-medium mb-4">Line Utilization %</h3>
-          <div className="flex-1 min-h-[250px] flex justify-center">
-            <Doughnut data={lineUtilization} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }} />
+          <div className="card flex flex-col min-h-[300px]">
+            <h3 className="text-lg font-medium mb-4">Line Utilization %</h3>
+            <div className="flex-1 min-h-[250px] flex justify-center">
+              <Doughnut data={lineUtilization} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }} />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <UploadRequiredNotice />
+      )}
     </div>
   );
 };

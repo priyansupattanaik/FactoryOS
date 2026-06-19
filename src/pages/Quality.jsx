@@ -1,9 +1,12 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Line, Doughnut } from 'react-chartjs-2';
 import KPICard from '../components/KPICard';
+import UploadRequiredNotice from '../components/UploadRequiredNotice';
 import { CheckCircle, RefreshCw, XCircle } from 'lucide-react';
 
 const Quality = () => {
+  const { hasUploadedWorkbook } = useOutletContext();
   const yieldTrend = {
     labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
     datasets: [{
@@ -34,21 +37,25 @@ const Quality = () => {
         <KPICard title="Rework Rate" value="2.3" unit="%" target="< 2%" status="warning" icon={RefreshCw} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card min-h-[300px] flex flex-col">
-          <h3 className="text-lg font-medium mb-4">7-Day Yield Trend</h3>
-          <div className="flex-1 min-h-[250px]">
-            <Line data={yieldTrend} options={{ maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 95, grid: { color: '#374151' } }, x: { grid: { color: '#374151' } } } }} />
+      {hasUploadedWorkbook ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card min-h-[300px] flex flex-col">
+            <h3 className="text-lg font-medium mb-4">7-Day Yield Trend</h3>
+            <div className="flex-1 min-h-[250px]">
+              <Line data={yieldTrend} options={{ maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 95, grid: { color: '#374151' } }, x: { grid: { color: '#374151' } } } }} />
+            </div>
           </div>
-        </div>
 
-        <div className="card min-h-[300px] flex flex-col">
-          <h3 className="text-lg font-medium mb-4">Defect Analysis</h3>
-          <div className="flex-1 min-h-[250px] flex justify-center">
-            <Doughnut data={defectData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#9ca3af' } } } }} />
+          <div className="card min-h-[300px] flex flex-col">
+            <h3 className="text-lg font-medium mb-4">Defect Analysis</h3>
+            <div className="flex-1 min-h-[250px] flex justify-center">
+              <Doughnut data={defectData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#9ca3af' } } } }} />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <UploadRequiredNotice />
+      )}
     </div>
   );
 };

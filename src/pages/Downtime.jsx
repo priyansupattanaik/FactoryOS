@@ -1,9 +1,12 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import KPICard from '../components/KPICard';
+import UploadRequiredNotice from '../components/UploadRequiredNotice';
 import { Clock, Wrench, Zap, CheckCircle, Package } from 'lucide-react';
 
 const Downtime = () => {
+  const { hasUploadedWorkbook } = useOutletContext();
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -76,54 +79,56 @@ const Downtime = () => {
         <KPICard title="Material" value="65" unit="mins" status="warning" icon={Package} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Pareto Chart */}
-        <div className="card min-h-[400px] flex flex-col">
-          <h3 className="text-lg font-medium mb-4">Downtime Pareto Analysis</h3>
-          <div className="flex-1 min-h-[300px]">
-            <Bar data={paretoData} options={paretoOptions} />
+      {hasUploadedWorkbook ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card min-h-[400px] flex flex-col">
+            <h3 className="text-lg font-medium mb-4">Downtime Pareto Analysis</h3>
+            <div className="flex-1 min-h-[300px]">
+              <Bar data={paretoData} options={paretoOptions} />
+            </div>
           </div>
-        </div>
 
-        {/* Machine Wise Table */}
-        <div className="card flex flex-col">
-          <h3 className="text-lg font-medium mb-4">Machine-wise Downtime</h3>
-          <div className="flex-1 overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-gray-200 dark:border-dark-border text-gray-500 dark:text-gray-400 text-sm">
-                  <th className="pb-3 font-medium">Machine</th>
-                  <th className="pb-3 font-medium">Line</th>
-                  <th className="pb-3 font-medium">Reason</th>
-                  <th className="pb-3 font-medium text-right">Duration (m)</th>
-                  <th className="pb-3 font-medium">Status</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                {[
-                  { m: 'Stringer 3', l: 'Line 2', r: 'Cell Tab Fault', d: 120, s: 'Resolved' },
-                  { m: 'Layup Robot', l: 'Line 1', r: 'Material Shortage', d: 65, s: 'Active' },
-                  { m: 'Laminator 1', l: 'Line 4', r: 'Heating Element', d: 40, s: 'Resolved' },
-                  { m: 'Framer', l: 'Line 2', r: 'Sensor Error', d: 25, s: 'Resolved' },
-                  { m: 'Bussing Sta', l: 'Line 3', r: 'Operator Break', d: 13, s: 'Resolved' },
-                ].map((row, i) => (
-                  <tr key={i} className="border-b border-gray-100 dark:border-dark-border/50 hover:bg-gray-50 dark:hover:bg-dark-border/30">
-                    <td className="py-3 font-medium">{row.m}</td>
-                    <td className="py-3">{row.l}</td>
-                    <td className="py-3 text-gray-500 dark:text-gray-400">{row.r}</td>
-                    <td className="py-3 text-right font-medium text-danger">{row.d}</td>
-                    <td className="py-3">
-                      <span className={`px-2 py-1 rounded text-xs ${row.s === 'Active' ? 'bg-danger/20 text-danger' : 'bg-success/20 text-success'}`}>
-                        {row.s}
-                      </span>
-                    </td>
+          <div className="card flex flex-col">
+            <h3 className="text-lg font-medium mb-4">Machine-wise Downtime</h3>
+            <div className="flex-1 overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-dark-border text-gray-500 dark:text-gray-400 text-sm">
+                    <th className="pb-3 font-medium">Machine</th>
+                    <th className="pb-3 font-medium">Line</th>
+                    <th className="pb-3 font-medium">Reason</th>
+                    <th className="pb-3 font-medium text-right">Duration (m)</th>
+                    <th className="pb-3 font-medium">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="text-sm">
+                  {[
+                    { m: 'Stringer 3', l: 'Line 2', r: 'Cell Tab Fault', d: 120, s: 'Resolved' },
+                    { m: 'Layup Robot', l: 'Line 1', r: 'Material Shortage', d: 65, s: 'Active' },
+                    { m: 'Laminator 1', l: 'Line 4', r: 'Heating Element', d: 40, s: 'Resolved' },
+                    { m: 'Framer', l: 'Line 2', r: 'Sensor Error', d: 25, s: 'Resolved' },
+                    { m: 'Bussing Sta', l: 'Line 3', r: 'Operator Break', d: 13, s: 'Resolved' },
+                  ].map((row, i) => (
+                    <tr key={i} className="border-b border-gray-100 dark:border-dark-border/50 hover:bg-gray-50 dark:hover:bg-dark-border/30">
+                      <td className="py-3 font-medium">{row.m}</td>
+                      <td className="py-3">{row.l}</td>
+                      <td className="py-3 text-gray-500 dark:text-gray-400">{row.r}</td>
+                      <td className="py-3 text-right font-medium text-danger">{row.d}</td>
+                      <td className="py-3">
+                        <span className={`px-2 py-1 rounded text-xs ${row.s === 'Active' ? 'bg-danger/20 text-danger' : 'bg-success/20 text-success'}`}>
+                          {row.s}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <UploadRequiredNotice />
+      )}
     </div>
   );
 };

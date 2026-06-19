@@ -1,9 +1,12 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Line, Bar } from 'react-chartjs-2';
 import KPICard from '../components/KPICard';
+import UploadRequiredNotice from '../components/UploadRequiredNotice';
 import { Activity, Target, Zap, CheckCircle, AlertTriangle, Users, ShieldAlert } from 'lucide-react';
 
 const Home = () => {
+  const { hasUploadedWorkbook } = useOutletContext();
   // Chart configurations and dummy data
   const chartOptions = {
     responsive: true,
@@ -89,26 +92,34 @@ const Home = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Charts */}
-        <div className="card lg:col-span-2 min-h-[300px] flex flex-col">
-          <h3 className="text-lg font-medium mb-4">Production Trend (Today)</h3>
-          <div className="flex-1 min-h-[250px]">
-            <Line data={productionData} options={chartOptions} />
-          </div>
-        </div>
+        {hasUploadedWorkbook ? (
+          <>
+            <div className="card lg:col-span-2 min-h-[300px] flex flex-col">
+              <h3 className="text-lg font-medium mb-4">Production Trend (Today)</h3>
+              <div className="flex-1 min-h-[250px]">
+                <Line data={productionData} options={chartOptions} />
+              </div>
+            </div>
 
-        <div className="card min-h-[300px] flex flex-col">
-          <h3 className="text-lg font-medium mb-4">Grade Distribution</h3>
-          <div className="flex-1 min-h-[250px]">
-            <Bar data={gradeData} options={{...chartOptions, indexAxis: 'y'}} />
-          </div>
-        </div>
+            <div className="card min-h-[300px] flex flex-col">
+              <h3 className="text-lg font-medium mb-4">Grade Distribution</h3>
+              <div className="flex-1 min-h-[250px]">
+                <Bar data={gradeData} options={{...chartOptions, indexAxis: 'y'}} />
+              </div>
+            </div>
 
-        <div className="card lg:col-span-2 min-h-[300px] flex flex-col">
-          <h3 className="text-lg font-medium mb-4">Downtime by Line</h3>
-          <div className="flex-1 min-h-[250px]">
-            <Bar data={downtimeData} options={chartOptions} />
+            <div className="card lg:col-span-2 min-h-[300px] flex flex-col">
+              <h3 className="text-lg font-medium mb-4">Downtime by Line</h3>
+              <div className="flex-1 min-h-[250px]">
+                <Bar data={downtimeData} options={chartOptions} />
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="lg:col-span-2">
+            <UploadRequiredNotice />
           </div>
-        </div>
+        )}
 
         {/* Live Status & Alerts */}
         <div className="card flex flex-col space-y-6">

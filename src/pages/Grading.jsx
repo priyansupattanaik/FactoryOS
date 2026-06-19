@@ -1,7 +1,10 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
+import UploadRequiredNotice from '../components/UploadRequiredNotice';
 
 const Grading = () => {
+  const { hasUploadedWorkbook } = useOutletContext();
   const gradeTrend = {
     labels: ['Shift 1', 'Shift 2', 'Shift 3', 'Shift 1', 'Shift 2'],
     datasets: [
@@ -29,22 +32,26 @@ const Grading = () => {
         })}
       </div>
 
-      <div className="card min-h-[400px] flex flex-col">
-        <h3 className="text-lg font-medium mb-4">Grade Trends over Shifts</h3>
-        <div className="flex-1 min-h-[300px]">
-          <Bar 
-            data={gradeTrend} 
-            options={{ 
-              maintainAspectRatio: false, 
-              scales: { 
-                x: { stacked: true, grid: { color: '#374151' }, ticks: { color: '#9ca3af' } }, 
-                y: { stacked: true, grid: { color: '#374151' }, ticks: { color: '#9ca3af' } } 
-              },
-              plugins: { legend: { labels: { color: '#9ca3af' } } }
-            }} 
-          />
+      {hasUploadedWorkbook ? (
+        <div className="card min-h-[400px] flex flex-col">
+          <h3 className="text-lg font-medium mb-4">Grade Trends over Shifts</h3>
+          <div className="flex-1 min-h-[300px]">
+            <Bar 
+              data={gradeTrend} 
+              options={{ 
+                maintainAspectRatio: false, 
+                scales: { 
+                  x: { stacked: true, grid: { color: '#374151' }, ticks: { color: '#9ca3af' } }, 
+                  y: { stacked: true, grid: { color: '#374151' }, ticks: { color: '#9ca3af' } } 
+                },
+                plugins: { legend: { labels: { color: '#9ca3af' } } }
+              }} 
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <UploadRequiredNotice />
+      )}
     </div>
   );
 };
