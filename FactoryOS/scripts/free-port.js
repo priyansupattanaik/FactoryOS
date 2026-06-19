@@ -1,6 +1,7 @@
 import { execSync } from 'child_process';
 
-const port = process.argv[2] || '5173';
+const ports = process.argv.slice(2);
+const targetPorts = ports.length > 0 ? ports : ['5173'];
 
 function freePortWindows(targetPort) {
   try {
@@ -18,10 +19,6 @@ function freePortWindows(targetPort) {
       }
     }
 
-    if (pids.size === 0) {
-      return;
-    }
-
     for (const pid of pids) {
       try {
         execSync(`taskkill /PID ${pid} /F`, { stdio: 'ignore' });
@@ -36,5 +33,7 @@ function freePortWindows(targetPort) {
 }
 
 if (process.platform === 'win32') {
-  freePortWindows(port);
+  for (const port of targetPorts) {
+    freePortWindows(port);
+  }
 }

@@ -28,5 +28,5 @@ echo Keep this window open while you are viewing the dashboard.
 echo ========================================================
 echo.
 
-call npm run dev:restart
+call npm run dev
 pause
