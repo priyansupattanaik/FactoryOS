@@ -326,7 +326,7 @@ Every page other than `Reports.jsx` still outputs JSX composed from:
 | `react-chartjs-2` | React wrapper for Chart.js | Simplifies embedding Chart.js instances inside React components. |
 | Lucide React | Icons | Provides lightweight SVG icons for navigation, KPI cards, and action buttons. |
 | `xlsx` | Spreadsheet parsing | Reads `.xlsx`, `.xls`, and `.csv` content into sheet/row structures that can be validated and charted exactly. |
-| `multer` | Multipart upload handling | Accepts browser file uploads in memory and enforces size limits safely. |
+| `multer` | Multipart upload handling | Accepts browser file uploads in memory for backend parsing. |
 | Windows batch + Node child process utilities | Local startup ergonomics | Adds a Windows-first launch path and port cleanup helper for predictable local runs. |
 
 ## 11. Audit and Cleanup Result

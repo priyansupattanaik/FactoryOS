@@ -138,7 +138,7 @@ const Reports = ({ uploadedWorkbook, uploadState }) => {
             <Table2 className="mx-auto h-10 w-10 text-primary" />
             <h3 className="mt-4 text-lg font-semibold">No uploaded dataset</h3>
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              Use the Upload Excel control in the header first, then come back here to verify the visualizations. Supported formats: .xlsx, .xls, .csv. Maximum file size: 10 MB.
+              Use the Upload Excel control in the header first, then come back here to verify the visualizations. Supported formats: .xlsx, .xls, .csv.
             </p>
           </div>
         ) : (

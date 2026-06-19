@@ -83,7 +83,6 @@ What it does:
 
 - Upload entry point: header button in `DashboardLayout`
 - Supported file types: `.xlsx`, `.xls`, `.csv`
-- Upload size limit: 10 MB
 - Parse endpoint: `POST /api/uploads/parse`
 - Health endpoint: `GET /api/health`
 - Visualization page: `/reports`

@@ -6,11 +6,9 @@ import * as XLSX from 'xlsx';
 
 const app = express();
 const port = Number(process.env.PORT || 3001);
-const maxUploadBytes = 10 * 1024 * 1024;
 const allowedExtensions = new Set(['.xlsx', '.xls', '.csv']);
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: maxUploadBytes },
 });
 
 app.get('/api/health', (_req, res) => {
@@ -33,12 +31,6 @@ app.post('/api/uploads/parse', upload.single('file'), (req, res) => {
       });
     }
 
-    if (req.file.size > maxUploadBytes) {
-      return res.status(400).json({
-        error: 'File exceeds the 10 MB upload limit. Upload a smaller file and try again.',
-      });
-    }
-
     const workbookPayload = parseWorkbook(req.file.buffer, req.file.originalname, extension);
 
     return res.json(workbookPayload);
@@ -56,12 +48,6 @@ app.use((_req, res) => {
 });
 
 app.use((error, _req, res, _next) => {
-  if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
-    return res.status(400).json({
-      error: 'File exceeds the 10 MB upload limit. Upload a smaller file and try again.',
-    });
-  }
-
   return res.status(500).json({
     error: 'The server could not process the request.',
   });
