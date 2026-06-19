@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/free-port.js 5173",
     "dev": "vite",
+    "dev:restart": "node scripts/free-port.js 5173 && vite",
     "build": "vite build",
     "preview": "vite preview"
   },

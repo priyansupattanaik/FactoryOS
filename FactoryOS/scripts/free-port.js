@@ -18,6 +18,10 @@ function freePortWindows(targetPort) {
       }
     }
 
+    if (pids.size === 0) {
+      return;
+    }
+
     for (const pid of pids) {
       try {
         execSync(`taskkill /PID ${pid} /F`, { stdio: 'ignore' });

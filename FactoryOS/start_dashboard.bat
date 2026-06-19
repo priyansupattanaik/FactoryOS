@@ -20,16 +20,13 @@ call npm install
 echo.
 echo [2/2] Starting the web server...
 echo.
-echo Freeing port 5173 if another instance is still running...
-call node scripts/free-port.js 5173
-echo.
 echo ========================================================
 echo The dashboard will be available at: http://localhost:5173
-echo (If port 5173 is busy, Vite will use the next free port shown below.)
+echo (Restarts cleanly if a previous instance is still running.)
 echo Please open your browser (Chrome/Edge) and go to that link.
 echo Keep this window open while you are viewing the dashboard.
 echo ========================================================
 echo.
 
-call npm run dev
+call npm run dev:restart
 pause
