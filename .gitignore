@@ -4,4 +4,3 @@ dist/
 .DS_Store
 terminals/
 mcps/
-/package-lock.json

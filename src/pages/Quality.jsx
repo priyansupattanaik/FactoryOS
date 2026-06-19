@@ -1,7 +1,7 @@
 import React from 'react';
 import { Line, Doughnut } from 'react-chartjs-2';
 import KPICard from '../components/KPICard';
-import { CheckCircle, AlertOctagon, RefreshCw, XCircle } from 'lucide-react';
+import { CheckCircle, RefreshCw, XCircle } from 'lucide-react';
 
 const Quality = () => {
   const yieldTrend = {
