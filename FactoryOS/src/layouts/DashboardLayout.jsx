@@ -47,6 +47,7 @@ const DashboardLayout = ({ darkMode, setDarkMode }) => {
                 <li key={item.path}>
                   <NavLink
                     to={item.path}
+                    end={item.path === '/'}
                     className={({ isActive }) =>
                       `flex items-center px-3 py-2.5 rounded-lg transition-colors ${
                         isActive

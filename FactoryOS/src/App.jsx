@@ -13,6 +13,7 @@ import Backlog from './pages/Backlog';
 import Packing from './pages/Packing';
 import SAPData from './pages/SAPData';
 import Reports from './pages/Reports';
+import NotFound from './pages/NotFound';
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -34,12 +35,13 @@ function App() {
         <Route path="maintenance" element={<Maintenance />} />
         <Route path="quality" element={<Quality />} />
         <Route path="grading" element={<Grading />} />
-        <Route path="manpower" element={<Manpower />} />
         <Route path="manpower/entry" element={<ManpowerEntry />} />
+        <Route path="manpower" element={<Manpower />} />
         <Route path="backlog" element={<Backlog />} />
         <Route path="packing" element={<Packing />} />
         <Route path="sap" element={<SAPData />} />
         <Route path="reports" element={<Reports />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

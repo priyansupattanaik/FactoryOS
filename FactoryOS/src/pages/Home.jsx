@@ -1,31 +1,7 @@
 import React from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-} from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
 import KPICard from '../components/KPICard';
 import { Activity, Target, Zap, CheckCircle, AlertTriangle, Users, ShieldAlert } from 'lucide-react';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
 
 const Home = () => {
   // Chart configurations and dummy data
